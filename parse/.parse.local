@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "TheALevel": {
+      "applicationId": "QCoDICrJKN3wcGr8f1YY39X97IyepLRqUa5HWIEJ"
+    },
+    "_default": {
+      "link": "TheALevel"
+    }
+  }
+}
