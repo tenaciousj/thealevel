@@ -1,0 +1,39 @@
+body {
+  text-align: center;
+}
+h1 {
+    text-transform: initial;
+    font-size: 4em;
+}
+h2 {
+    text-transform: initial;
+}
+a{
+  color:black;
+}
+
+.box {
+    color: white;
+    background-color: #800000;
+    height: 50vh;
+    width: 50%;
+    position: relative;
+    border: 1px solid white;
+}
+.box-text {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    cursor:pointer;
+}
+
+.width-container {
+    width: 40%;
+}
+
+#message-text {
+    width: 50%;
+}

@@ -1,0 +1,113 @@
+
+<div class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a href="http://thealevel.com" class="navbar-brand">The A Level</a>
+      </div>
+     </div>
+   </div>
+  <br>
+
+  <div class="container">
+    <center><h1>Sign Up</h1></center>
+    <center><p id="error"></p></center>
+      <div class="row">
+        <div class="col-lg-10">
+          <form class="form-horizontal" ng-controller="SignUpController">
+            <fieldset>
+              <div class="form-group">
+                <label for="inputFirstName" class="col-lg-4 control-label">First Name</label>
+                <div class="col-lg-8">
+                  <input ng-model="firstName" type="text" class="form-control" id="inputFirstName">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputLastName" class="col-lg-4 control-label">Last Name</label>
+                <div class="col-lg-8">
+                  <input ng-model="lastName" type="text" class="form-control" id="inputLastName">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputEmail" class="col-lg-4 control-label">Email</label>
+                <div class="col-lg-8">
+                  <input ng-model="email" type="email" class="form-control" id="inputEmail">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputPassword" class="col-lg-4 control-label">Password</label>
+                <div class="col-lg-8">
+                  <input ng-model="password" type="password" class="form-control" id="inputPassword">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="major" class="col-lg-4 control-label">Major(s)</label>
+                <div class="col-lg-8">
+                  <select ng-model="majors.multipleSelect" multiple="" class="form-control" id="majors">
+                    <option ng-repeat="m in majors">{{m}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputClassYear" class="col-lg-4 control-label">Class Year</label>
+                <div class="col-lg-8">
+                  <input ng-model="classYear" type="number" class="form-control" id="inputClassYear" placeholder="e.g. 2017">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="major" class="col-lg-4 control-label">Courses</label>
+                <div class="col-lg-8">
+                  <select ng-model="courses.multipleSelect" multiple="" class="form-control" id="courses">
+                    <option ng-repeat="c in courses">{{c}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="division" class="col-lg-4 control-label">Division of University</label>
+                <div class="col-lg-8">
+                  <select ng-model="division.singleSelect" class="form-control">
+                    <option selected>Biological Sciences Collegiate Division</option>
+                    <option>Humanities Collegiate Division</option>
+                    <option>New Collegiate Division</option>
+                    <option>Physical Sciences Collegiate Division</option>
+                    <option>Social Sciences Collegiate Division</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="inputPhoneNumber" class="col-lg-4 control-label">Phone Number</label>
+                <div class="col-lg-8">
+                  <input ng-model="phone" type="tel" class="form-control" id="inputPhoneNumber">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-lg-4 control-label">Student or Tutor?</label>
+                <div class="col-lg-8">
+                  <div class="radio">
+                    <label>
+                      <input ng-model="userType" type="radio" name="optionRadios" id="studentType" value="student">
+                      Student
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input ng-model="userType" type="radio" name="optionRadios" id="tutorType" value="tutor">
+                      Tutor
+                    </label>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <div class="col-lg-10 col-lg-offset-2">
+                  <button type="submit" class="btn btn-primary" ng-click="signUp()">Submit</button>
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+        
+
+      </div>
+
+
+  </div>
