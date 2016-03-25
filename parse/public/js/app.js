@@ -428,6 +428,13 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
     };
 
 
+    //log tutor out
+    $scope.tutorLogOut = function () {
+      Parse.User.logOut();
+
+    }
+
+
      
 });
 
