@@ -20,19 +20,61 @@ aLevelApp.config(['$routeProvider',
         templateUrl: 'templates/tutor_dashboard.html',
         controller: 'TutorDashboardController'
       }).
+      when('/studentdashboard', {
+        templateUrl: 'templates/student_dashboard.html',
+        controller: 'StudentDashboardController'
+      }).
       otherwise({
         redirectTo: '/login'
       });
 }]);
  
 
-aLevelApp.controller('LoginController', function($scope) {
+aLevelApp.controller('LoginController', function($scope, $location) {
      
+  $scope.dashboardLogIn = function() {
+    var errorHTML = "";
+    if(typeof $scope.email == "undefined" || $scope.email.indexOf("@") == -1 || $scope.email.indexOf(".") == -1){
+      errorHTML += "Email not defined correctly. "
+    }
+    if(typeof $scope.password == "undefined"){
+      errorHTML += " Password not defined correctly.";
+    }
+
+    //if an error occurred
+    if(errorHTML != ""){
+      $("#error").html(errorHTML);
+      $("#error").css("color", "red");
+    }
+    //otherwise, log the person in!
+    else{
+      $("#error").html("");
+      Parse.User.logIn($scope.email, $scope.password, {
+        success: function(user){
+          if(user.get("type") == "tutor"){
+            $location.path("tutordashboard");
+          }
+          else if (user.get("type") == "student"){
+            $location.path("studentdashboard");
+          }
+        },
+        error: function(user, error){
+          //Login failed
+          $location.path("login");
+          $("#error").html("Login failed. Please check your credentials");
+        }
+      });
+    }
+  };
+
+  $scope.studentLogOut = function(){
+    Parse.User.logOut();
+  }
      
 });
 
  
-
+/////////////////////////////////////////////////////////////////////////////////////////////////
 aLevelApp.factory("coursesService", function($rootScope, $q){
 
   return {
@@ -44,7 +86,6 @@ aLevelApp.factory("coursesService", function($rootScope, $q){
 
       //query database for courses
       var coursesQuery = new Parse.Query(Parse.Object.extend("Subject"));
-      coursesQuery.ascending("Department,Course_Number"); 
 
       coursesQuery.find({
         success: function(results){ 
@@ -113,7 +154,7 @@ aLevelApp.controller('SignUpController', function($scope, $location, coursesServ
       }
       else {
         for(var i = 0; i < results.length; i++){
-          $scope.courses.push(results[i].get("Department") + " " + results[i].get("Course_Number"));
+          $scope.courses.push(results[i].get("Name"));
         }
       }
     },
@@ -242,7 +283,7 @@ aLevelApp.controller('SignUpController', function($scope, $location, coursesServ
             $location.path("tutordashboard");
           }
           else if(type == "student"){
-            $location.path("login");
+            $location.path("studentdashboard");
           }
           $scope.$apply();
 
@@ -261,9 +302,10 @@ aLevelApp.controller('SignUpController', function($scope, $location, coursesServ
 
 });
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////
 aLevelApp.controller('TutorDashboardController', function($scope, $location) {
      var currentUser = Parse.User.current();
+     debugger;
 
      $scope.messages = [];
      $scope.filters = [];
@@ -274,7 +316,7 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
         $scope.$apply();
      }
      else{
-      /////////////////LOAD MESSAGES//////////////////////
+      //LOAD MESSAGES//
       var messageClass = Parse.Object.extend("Message");
       var messageQuery = new Parse.Query(messageClass);
 
@@ -327,7 +369,7 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
           $("#messages").html("<p>No messages found, database error</p>");
         }
       });
-      ////////////LOAD FILTERS//////////////////
+      ////LOAD FILTERS////
       var subjectClass = Parse.Object.extend("Subject");
       var subjectQuery = new Parse.Query(subjectClass);
 
@@ -433,11 +475,26 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
       Parse.User.logOut();
 
     }
-
-
      
 });
 
+/////////////////////////////////////////////////////////////////////////////////////////////////
+aLevelApp.controller('StudentDashboardController', function($scope, $location) {
+
+  var currentUser = Parse.User.current();
+
+  if(!currentUser){
+    //no one is signed in, go to login page
+    $location.path("login");
+    $scope.$apply();
+  }
+  else {
+
+  }
+});
+
+//HELPER FUNCTIONS
+/////////////////////////////////////////////////////////////////////////////////////////////////
 
 //helper function to make input more readable
 function capitalizeString(str){
