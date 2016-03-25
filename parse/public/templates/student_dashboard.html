@@ -1,35 +1,107 @@
- <div class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-      <div class="navbar-header">
-        <a href="http://thealevel.com" class="navbar-brand">The A Level</a>
-        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-      </div>
-      <div class="navbar-collapse collapse" id="navbar-main">
-        <ul class="nav navbar-nav">
-          
-          <li>
-            <a href="#">Ask A Question</a>
-          </li>
-          <li>
-            <a href="#">Upcoming Sessions</a>
-          </li>
-          <li>
-            <a href="#">Session History</a>
-          </li>
-          <li>
-            <a href="#">Account Settings</a>
-          </li>
-        </ul>
+<!--Nav bar-->
+<div class="navbar navbar-default navbar-fixed-top">
+	<div class="container">
+	  <div class="navbar-header">
+	    <a href="http://thealevel.com" class="navbar-brand">The A Level</a>
+	    <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	      <span class="icon-bar"></span>
+	    </button>
+	  </div>
+	  <div class="navbar-collapse collapse" id="navbar-main">
+	    <ul class="nav navbar-nav">
+	      
+	      <li>
+	        <a href="#">Ask A Question</a>
+	      </li>
+	      <li>
+	        <a href="#">Upcoming Sessions</a>
+	      </li>
+	      <li>
+	        <a href="#">Session History</a>
+	      </li>
+	      <li>
+	        <a href="#">Account Settings</a>
+	      </li>
+	    </ul>
 
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="#" ng-click='studentLogOut()'>Logout</a></li>
-        </ul>
+	    <ul class="nav navbar-nav navbar-right">
+	      <li><a href="#" ng-click='studentLogOut()'>Logout</a></li>
+	    </ul>
 
-      </div>
+	  </div>
+	</div>
+</div>
 
-    </div>
-  </div>
+<div class="row" style="padding-top:50px">
+	<div class="col-lg-8">
+		<form class="form-horizontal">
+		  <fieldset>
+		    <legend>Ask a Question</legend>
+		    <div class="form-group">
+		      <label for="inputHeader" class="col-lg-2 control-label">Header</label>
+		      <div class="col-lg-10">
+		        <input type="text" class="form-control" id="inputHeader" placeholder="Create a subject line for your question.">
+		      </div>
+		    </div>
+		    <div class="form-group">
+		      <label for="textArea" class="col-lg-2 control-label">Question</label>
+		      <div class="col-lg-10">
+		        <textarea class="form-control" rows="3" id="inputQuestion"></textarea>
+		        <span class="help-block">Describe your question more thoroughly here.</span>
+		      </div>
+		    </div>
+		    <div class="form-group">
+		      <label for="select" class="col-lg-2 control-label">Subject(s)</label>
+		      <div class="col-lg-10">
+		        <select multiple="" class="form-control">
+		          <option>ECON 201</option>
+		          <option>ANTHRO 101</option>
+		          <option>CS 101</option>
+		          <option>ECON 201</option>
+		        </select>
+		      </div>
+		    </div>
+		    <div class="form-group">
+		      <label for="select" class="col-lg-2 control-label">Meeting Place(s)</label>
+		      <div class="col-lg-10">
+		        <select multiple="" class="form-control">
+		          <option>The Reg</option>
+		          <option>Mansueto</option>
+		          <option>The Quad</option>
+		          <option>Place 4</option>
+		        </select>
+		      </div>
+		    </div>
+		    <div class="form-group">
+		      <label for="select" class="col-lg-2 control-label">Meeting Time(s)</label>
+		      <div class="col-lg-10">
+		        <div class="checkbox">
+		          <label>
+		            <input type="checkbox"> 9:00 am &nbsp;
+		          </label>
+		          <label>
+		            <input type="checkbox"> 10:00 am &nbsp;
+		          </label>
+		          <label>
+		            <input type="checkbox"> 11:00 am &nbsp;
+		          </label>
+		          <label>
+		            <input type="checkbox"> 12:00 pm &nbsp;
+		          </label>
+		          <label>
+		            <input type="checkbox"> 1:00 pm &nbsp;
+		          </label>
+		        </div>
+		      </div>
+		    </div>
+		    <div class="form-group">
+		      <div class="col-lg-10 col-lg-offset-2">
+		        <button type="submit" class="btn btn-primary">Submit</button>
+		      </div>
+		    </div>
+		  </fieldset>
+		</form>
+	</div>
+</div>

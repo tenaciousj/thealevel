@@ -77,26 +77,26 @@ aLevelApp.controller('LoginController', function($scope, $location) {
 
  
 /////////////////////////////////////////////////////////////////////////////////////////////////
-aLevelApp.factory("coursesService", function($rootScope, $q){
+aLevelApp.factory("subjectsService", function($rootScope, $q){
 
   return {
-    getCourses : function() {
+    getsubjects : function() {
       //$q is specific to Angular, made for async calls
       //For documentation on $q, look at
       //https://docs.angularjs.org/api/ng/service/$q
       var deferred = $q.defer();
 
-      //query database for courses
-      var coursesQuery = new Parse.Query(Parse.Object.extend("Subject"));
+      //query database for subjects
+      var subjectsQuery = new Parse.Query(Parse.Object.extend("Subject"));
 
-      coursesQuery.find({
+      subjectsQuery.find({
         success: function(results){ 
           deferred.resolve(results);
           //update the view!!
           $rootScope.$apply();
         },
         error: function(error){
-          console.log("Error in loading courses: " + error.message);
+          console.log("Error in loading subjects: " + error.message);
           deferred.reject(error);
           //update the view!!
           $rootScope.$apply();
@@ -144,24 +144,24 @@ aLevelApp.factory("majorsService", function($rootScope, $q){
 
 });
 
-aLevelApp.controller('SignUpController', function($scope, $location, coursesService, majorsService) {
+aLevelApp.controller('SignUpController', function($scope, $location, subjectsService, majorsService) {
 
-  $scope.courses = [];
+  $scope.subjects = [];
 
-  //get the courses from db, then update $scope.courses
-  coursesService.getCourses().then(
+  //get the subjects from db, then update $scope.subjects
+  subjectsService.getsubjects().then(
     function(results){
       if(results.length == 0){
-        $scope.courses = ["No courses available"];
+        $scope.subjects = ["No subjects available"];
       }
       else {
         for(var i = 0; i < results.length; i++){
-          $scope.courses.push(results[i].get("Name"));
+          $scope.subjects.push(results[i].get("Name"));
         }
       }
     },
     function(error){
-      $scope.courses = ["No courses available, database error"];
+      $scope.subjects = ["No subjects available, database error"];
     }
   );
 
@@ -180,7 +180,7 @@ aLevelApp.controller('SignUpController', function($scope, $location, coursesServ
       }
     },
     function(error){
-      $scope.courses = ["No majors available, database error"];
+      $scope.subjects = ["No majors available, database error"];
     }
   );
 
@@ -188,8 +188,9 @@ aLevelApp.controller('SignUpController', function($scope, $location, coursesServ
 
   $scope.signUp = function() {
     var needsFillingOut = [];
-    var firstName, lastName, email, password, majors, classYear, courses, division, phone, type;
+    var firstName, lastName, email, password, majors, classYear, subjects, division, phone, type;
     //validate information gathered from form
+
     if(typeof $scope.firstName == "undefined"){
       needsFillingOut.push("First Name");
     }
@@ -220,9 +221,9 @@ aLevelApp.controller('SignUpController', function($scope, $location, coursesServ
     if(typeof classYear == "undefined" || classYear.toString().length != 4 ){
       needsFillingOut.push("Class Year");
     }
-    courses = $scope.courses.multipleSelect;
-    if(typeof courses == "undefined"){
-      needsFillingOut.push("Courses");
+    subjects = $scope.subjects.multipleSelect;
+    if(typeof subjects == "undefined"){
+      needsFillingOut.push("subjects");
     }
     division = $scope.division.singleSelect;
     if(typeof division == "undefined"){
@@ -272,7 +273,7 @@ aLevelApp.controller('SignUpController', function($scope, $location, coursesServ
       newUser.set("lastName", lastName);
       newUser.set("majors", majors);
       newUser.set("classYear", classYear);
-      newUser.set("subjects", courses);
+      newUser.set("subjects", subjects);
       newUser.set("division", division);
       newUser.set("phoneNumber", phone);
 
@@ -311,7 +312,7 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
      $scope.messages = [];
      $scope.filters = [];
 
-     if(!currentUser){
+     if(!currentUser || currentUser.get("type") != "tutor"){
         //no one is signed in, go to login page
         $location.path("login");
         $scope.$apply();
@@ -497,7 +498,7 @@ aLevelApp.controller('StudentDashboardController', function($scope, $location) {
 
   var currentUser = Parse.User.current();
 
-  if(!currentUser){
+  if(!currentUser || currentUser.get("type") != "student"){
     //no one is signed in, go to login page
     $location.path("login");
     $scope.$apply();
