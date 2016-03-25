@@ -44,15 +44,33 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row" ng-controller="TutorDashboardController">
         	<div id="messages" class="col-lg-8 col-md-8 col-sm-8 col-xs-6" style="overflow:auto; height:375px;">
+            <img id="messageLoad" src='img/loading.gif' />
+            <div class="list-group">
+              <a href="#" ng-repeat="m in messages" class="list-group-item">
+                <h4 class="list-group-item-heading">{{ m["header"] }}</h4>
+                <p class="list-group-item-text"> {{ m["createdAt"] }} </p>
+                <p class="list-group-item-text">{{ m["content"] }}</p>
+              </a>
+            </div>
       		</div>
 
       		<div id="filters" class="col-lg-4 col-md-4 col-sm-4 col-xs-6" style="overflow:auto; height:375px;">
+            <img id="filterLoad" src='img/loading.gif' />
+            <ul style="list-style-type:none; text-align:left;">
+              <li ng-repeat="f in filters">
+                <div class="checkbox">
+                  <label>
+                        <input class='checkboxes' ng-click='filterMessages()' id="{{ f['id'] }}" type="checkbox"> {{ f["name"] }}
+                  </label>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
 
 
     </div>
 
-    <script src="../js/tutor_dashboard.js"></script>
+    <!-- // <script src="../js/tutor_dashboard.js"></script> -->
