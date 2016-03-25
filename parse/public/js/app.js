@@ -278,9 +278,13 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
       var messageClass = Parse.Object.extend("Message");
       var messageQuery = new Parse.Query(messageClass);
 
+      var subjectList = currentUser.get("subjects");
+      
+
       //order by date created (older ones should go first)
       messageQuery.ascending("createdAt");
 
+     
       messageQuery.find({
         success: function(results){
           console.log("Messages successfully retrieved from database");
@@ -295,15 +299,23 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
           else {
 
             for(var i = 0; i < results.length; i++){
-              var obj = {};
-              var createdAt = new Date();
-              createdAt = results[i]["createdAt"];
 
-              obj["header"] = results[i].get("header");
-              obj["createdAt"] = createdAt.toDateString() + " " + formatAMPM(createdAt);
-              obj["content"] = results[i].get("content");
+              //if any of these matches any of the user's subjects
+              //we don't want to display messages that this specific tutor
+              //doesn't specialize in
+              var subjectListOfResults = results[i].get("subjects");
+              if(findOne(subjectListOfResults, subjectList)){
+                var obj = {};
+                var createdAt = new Date();
+                createdAt = results[i]["createdAt"];
 
-              $scope.messages.push(obj);
+                obj["header"] = results[i].get("header");
+                obj["createdAt"] = createdAt.toDateString() + " " + formatAMPM(createdAt);
+                obj["content"] = results[i].get("content");
+
+                $scope.messages.push(obj);
+              }
+              
               
             }
             $scope.$apply();
@@ -319,8 +331,8 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
       var subjectClass = Parse.Object.extend("Subject");
       var subjectQuery = new Parse.Query(subjectClass);
 
-      subjectQuery.ascending("Department,Course_Number");
-      
+      //sort by name
+      subjectQuery.ascending("Name");
 
       subjectQuery.find({
         success: function(results){
@@ -335,13 +347,15 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
           }
           else {
             for(var i = 0; i < results.length; i++){
-              var obj = {};
-              var dept = results[i].get("Department");
-              var courseNum = results[i].get("Course_Number");
 
-              obj["id"] = dept + "_" + courseNum;
-              obj["name"] = dept + " " + courseNum;
-              $scope.filters.push(obj);
+              if(subjectList.indexOf(results[i].get("Name")) > -1){
+                var obj = {};
+                var name = results[i].get("Name");
+
+                obj["id"] = name;
+                obj["name"] = name;
+                $scope.filters.push(obj);
+              }
             }
             $scope.$apply();
           }
@@ -354,6 +368,7 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
     }
 
     $scope.filterMessages = function(){
+
       var checkboxes = document.getElementsByClassName("checkboxes");
       var filterList = [];
       for(var i = 0; i < checkboxes.length; i++){
@@ -377,6 +392,7 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
       //we are going to query the messages to see which ones have the selected subjects
       var messageQuery = new Parse.Query(Parse.Object.extend("Message"));
       messageQuery.containedIn("subjects", filterList);
+      debugger;
       messageQuery.ascending("createdAt");
 
       messageQuery.find({
@@ -435,6 +451,14 @@ function formatAMPM(date) {
   var strTime = hours + ':' + minutes + ' ' + ampm;
   return strTime;
 }
+
+//sees if any element of arr matches any element of haystack
+//will use in TutorDashboardController
+var findOne = function (haystack, arr) {
+    return arr.some(function (v) {
+        return haystack.indexOf(v) >= 0;
+    });
+};
 
 
 
