@@ -33,6 +33,7 @@ aLevelApp.config(['$routeProvider',
 aLevelApp.controller('LoginController', function($scope, $location) {
      
   $scope.dashboardLogIn = function() {
+    debugger;
     var errorHTML = "";
     if(typeof $scope.email == "undefined" || $scope.email.indexOf("@") == -1 || $scope.email.indexOf(".") == -1){
       errorHTML += "Email not defined correctly. "
@@ -57,11 +58,13 @@ aLevelApp.controller('LoginController', function($scope, $location) {
           else if (user.get("type") == "student"){
             $location.path("studentdashboard");
           }
+          $scope.$apply();
         },
         error: function(user, error){
           //Login failed
           $location.path("login");
           $("#error").html("Login failed. Please check your credentials");
+          $scope.$apply();
         }
       });
     }
