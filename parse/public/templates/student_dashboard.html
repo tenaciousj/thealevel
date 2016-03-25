@@ -36,7 +36,7 @@
 
 <div class="row" style="padding-top:50px">
 	<div class="col-lg-8">
-		<form class="form-horizontal">
+		<form class="form-horizontal" ng-controller="StudentDashboardController">
 		  <fieldset>
 		    <legend>Ask a Question</legend>
 		    <div class="form-group">
@@ -56,10 +56,7 @@
 		      <label for="select" class="col-lg-2 control-label">Subject(s)</label>
 		      <div class="col-lg-10">
 		        <select multiple="" class="form-control">
-		          <option>ECON 201</option>
-		          <option>ANTHRO 101</option>
-		          <option>CS 101</option>
-		          <option>ECON 201</option>
+		          <option ng-repeat="s in subjects">{{s}}</option>
 		        </select>
 		      </div>
 		    </div>
@@ -67,10 +64,7 @@
 		      <label for="select" class="col-lg-2 control-label">Meeting Place(s)</label>
 		      <div class="col-lg-10">
 		        <select multiple="" class="form-control">
-		          <option>The Reg</option>
-		          <option>Mansueto</option>
-		          <option>The Quad</option>
-		          <option>Place 4</option>
+		          <option ng-repeat="m in meetingPlaces">{{m}}</option>
 		        </select>
 		      </div>
 		    </div>
