@@ -33,7 +33,6 @@ aLevelApp.config(['$routeProvider',
 aLevelApp.controller('LoginController', function($scope, $location) {
      
   $scope.dashboardLogIn = function() {
-    debugger;
     var errorHTML = "";
     if(typeof $scope.email == "undefined" || $scope.email.indexOf("@") == -1 || $scope.email.indexOf(".") == -1){
       errorHTML += "Email not defined correctly. "
@@ -308,8 +307,7 @@ aLevelApp.controller('SignUpController', function($scope, $location, coursesServ
 /////////////////////////////////////////////////////////////////////////////////////////////////
 aLevelApp.controller('TutorDashboardController', function($scope, $location) {
      var currentUser = Parse.User.current();
-     debugger;
-
+     
      $scope.messages = [];
      $scope.filters = [];
 
@@ -338,7 +336,8 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
 
           //if there are no messages
           if(results.length == 0){
-            $("#messages").html("<p>No messages found</p>");
+            $scope.messages[0] = {"header":"No messages found"};
+            $scope.$apply();
           }
           //otherwise, prepare the messages
           else {
@@ -369,7 +368,8 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
         },
         error: function(error){
           console.log("Error in startLoadMessages(): " + error);
-          $("#messages").html("<p>No messages found, database error</p>");
+          $scope.messages[0] = {"header":"No messages found, database error"};
+          $scope.$apply();
         }
       });
       ////LOAD FILTERS////
@@ -388,7 +388,8 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
 
 
           if(results.length == 0){
-            $("#filters").html("<p>No filters found</p>");
+            $scope.filters[0] = {"name":"No filters found"};
+            $scope.$apply();
           }
           else {
             for(var i = 0; i < results.length; i++){
@@ -407,7 +408,8 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
         },
         error: function(error){
           console.log("Error in startLoadFilters(): " + error);
-          $("#filters").html("<p>No filters found</p>");
+          $scope.filters[0] = {"name":"No filters found"};
+          $scope.$apply();
         }
       });
     }
@@ -433,11 +435,11 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
     };
 
     $scope.applyFilters = function(filterList){
-
+      
       //we are going to query the messages to see which ones have the selected subjects
       var messageQuery = new Parse.Query(Parse.Object.extend("Message"));
-      messageQuery.containedIn("subjects", filterList);
-      debugger;
+      
+
       messageQuery.ascending("createdAt");
 
       messageQuery.find({
@@ -446,20 +448,28 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
           console.log("Messages with filters successfully retrieved from database");
           //no messages
           if(results.length == 0){
-            $("#messages").html("<p>No messages with such filters available</p>");
+            $scope.messages[0] = {"header":"No messages with such filters available"};
+            $scope.$apply();
           }
           else {
+            debugger;
             $scope.messages = [];
             for(var i = 0; i < results.length; i++){
-              var obj = {};
-              var createdAt = new Date();
-              createdAt = results[i]["createdAt"];
+              var subjectListOfResults = results[i].get("subjects");
+              if(findOne(subjectListOfResults, filterList)){
+                var obj = {};
+                var createdAt = new Date();
+                createdAt = results[i]["createdAt"];
 
-              obj["header"] = results[i].get("header");
-              obj["createdAt"] = createdAt.toDateString() + " " + formatAMPM(createdAt);
-              obj["content"] = results[i].get("content");
+                obj["header"] = results[i].get("header");
+                obj["createdAt"] = createdAt.toDateString() + " " + formatAMPM(createdAt);
+                obj["content"] = results[i].get("content");
 
-              $scope.messages.push(obj);
+                $scope.messages.push(obj);
+              }
+            }
+            if($scope.messages.length == 0){
+              $scope.messages[0] = {"header":"No messages with that filter"};
             }
             $scope.$apply();
           }
@@ -467,7 +477,8 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
         error: function(error){
           //database error
           console.log("Error in applyFilters(): " + error);
-          $("#messages").html("<p>No messages with such filters available, database error</p>");
+          $scope.messages[0] = {"header":"No messages with such filters available, database error"};
+          $scope.$apply();
         }
       }); 
     };
