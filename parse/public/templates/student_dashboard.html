@@ -34,28 +34,29 @@
 	</div>
 </div>
 
-<div class="row" style="padding-top:50px">
-	<div class="col-lg-8">
-		<form class="form-horizontal" ng-controller="StudentDashboardController">
+<div class="row" style="padding-top:50px" ng-controller="StudentDashboardController">
+	<div class="col-lg-8" id="askQuestion">
+		<form class="form-horizontal">
 		  <fieldset>
 		    <legend>Ask a Question</legend>
+		    <p id="error"></p>
 		    <div class="form-group">
 		      <label for="inputHeader" class="col-lg-2 control-label">Header</label>
 		      <div class="col-lg-10">
-		        <input type="text" class="form-control" id="inputHeader" placeholder="Create a subject line for your question.">
+		        <input ng-model="header" type="text" class="form-control" id="inputHeader" placeholder="Create a subject line for your question.">
 		      </div>
 		    </div>
 		    <div class="form-group">
 		      <label for="textArea" class="col-lg-2 control-label">Question</label>
 		      <div class="col-lg-10">
-		        <textarea class="form-control" rows="3" id="inputQuestion"></textarea>
+		        <textarea ng-model="question" class="form-control" rows="3" id="inputQuestion"></textarea>
 		        <span class="help-block">Describe your question more thoroughly here.</span>
 		      </div>
 		    </div>
 		    <div class="form-group">
 		      <label for="select" class="col-lg-2 control-label">Subject(s)</label>
 		      <div class="col-lg-10">
-		        <select multiple="" class="form-control">
+		        <select ng-model="subjects.multipleSelect" multiple="" class="form-control">
 		          <option ng-repeat="s in subjects">{{s}}</option>
 		        </select>
 		      </div>
@@ -63,7 +64,7 @@
 		    <div class="form-group">
 		      <label for="select" class="col-lg-2 control-label">Meeting Place(s)</label>
 		      <div class="col-lg-10">
-		        <select multiple="" class="form-control">
+		        <select ng-model="meetingPlaces.multipleSelect" multiple="" class="form-control">
 		          <option ng-repeat="m in meetingPlaces">{{m}}</option>
 		        </select>
 		      </div>
@@ -71,68 +72,33 @@
 		    <div class="form-group">
 		      <label for="select" class="col-lg-2 control-label">Meeting Time(s)</label>
 		      <div class="col-lg-10">
-		        <div class="checkbox">
-		          Morning:&nbsp;&nbsp;&nbsp;&nbsp;
-		          <label>
-		            <input type="checkbox" id="8:00am"> 8:00 am &nbsp;
-		          </label>
-		          <label>
-		            <input type="checkbox" id="9:00am"> 9:00 am &nbsp;
-		          </label>
-		          <label>
-		            <input type="checkbox" id="10:00am"> 10:00 am
-		          </label>
-		          <label>
-		            <input type="checkbox" id="11:00am"> 11:00 am
-		          </label>
-		          <label>
-		            <input type="checkbox" id="12:00pm"> 12:00 pm
-		          </label>
-		          <br>
-		          <br>
-		          Afternoon:&nbsp;
-		          <label>
-		            <input type="checkbox" id="1:00pm"> 1:00 pm &nbsp;
-		          </label>
-		          <label>
-		            <input type="checkbox" id="2:00pm"> 2:00 pm &nbsp;
-		          </label>
-		          <label>
-		            <input type="checkbox" id="3:00pm"> 3:00 pm &nbsp;
-		          </label>
-		          <label>
-		            <input type="checkbox" id="4:00pm"> 4:00 pm &nbsp;
-		          </label>
-		          <label>
-		            <input type="checkbox" id="5:00pm"> 5:00 pm
-		          </label>
-		          <br>
-		          <br>
-		          Night:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		          <label>
-		            <input type="checkbox" id="6:00pm"> 6:00 pm &nbsp;
-		          </label>
-		          <label>
-		            <input type="checkbox" id="7:00pm"> 7:00 pm &nbsp;
-		          </label>
-		          <label>
-		            <input type="checkbox" id="8:00pm"> 8:00 pm &nbsp;
-		          </label>
-		          <label>
-		            <input type="checkbox" id="9:00pm"> 9:00 pm &nbsp;
-		          </label>
-		          <label>
-		            <input type="checkbox" id="10:00pm"> 10:00 pm
-		          </label>
+		      	<div id="dateAndTimePickers">
+		      		<input data-provide="datepicker" id="date_1" class="datepicker">
+		      		&nbsp;
+		            <input id="time_1" type="text" class="input-small">
+		            <i class="icon-time"></i>
+		            &nbsp;
+		            <button id="addPickerBtn" ng-click="addPickers()" class="btn btn-link"><i class="fa fa-plus-circle fa-lg"></i></button>
+		            <br>
 		        </div>
 		      </div>
 		    </div>
 		    <div class="form-group">
 		      <div class="col-lg-10 col-lg-offset-2">
-		        <button type="submit" class="btn btn-primary">Submit</button>
+		        <button ng-click="askQuestion()" type="submit" class="btn btn-primary">Submit</button>
 		      </div>
 		    </div>
 		  </fieldset>
 		</form>
 	</div>
+	<div class="col-lg-8" id="upcomingSessions" style="display:none">
+		Upcoming Sessions
+	</div>
+	<div class="col-lg-8" id="sessionHistory" style="display:none">
+		Session History
+	</div>
+	<div class="col-lg-8" id="accountSettings" style="display:none">
+		Account Settings
+	</div>
 </div>
+
