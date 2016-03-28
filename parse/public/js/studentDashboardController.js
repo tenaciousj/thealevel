@@ -106,30 +106,38 @@ aLevelApp.controller('StudentDashboardController', function($scope, $location, m
   };
 
   $scope.addPickers = function() {
-  	//remove + button for now, will add at the end
-  	var addPickerBtn = document.getElementById("addPickerBtn");
-  	$("#addPickerBtn").remove();
 
-  	var timeP = "#time_"+pickerNum;
-	var dateP = "#date_"+pickerNum;	
-  	document.getElementById("dateAndTimePickers").innerHTML += "<input data-provide='datepicker' id='"+dateP+"' class='datepicker'>"+
-													      		"&nbsp;"+
-													            "<input id='"+timeP+"' type='text' class='input-small'>"+
-													            "<i class='icon-time'></i>"+
-													            "&nbsp;";
+  	var timeP = "time_"+pickerNum;
+	  var dateP = "date_"+pickerNum;
+    var rem = "remPicker"+pickerNum;
+    var dt = "dt"+pickerNum;
+    var newHTML = "<div id='"+dt+"'>"+
+                  "<input data-provide='datepicker' id='"+dateP+"' class='datepicker'>"+
+                  "&nbsp"+
+                  "<input id='"+timeP+"' type='text' class='input-small'>"+
+                  "&nbsp"+
+                  "<button id='"+rem+"' class='btn btn-link'><i class='fa fa-minus-circle fa-lg'></i></button>"+
+                  "</div>";
 
-	
-  	
-  	document.getElementById("dateAndTimePickers").appendChild(addPickerBtn);											            
+    $("#dateAndTimePickers").append(newHTML);
+										            
   	//initialize date and time pickers
-  	$(timeP).timepicker({
+  	$("#"+timeP).timepicker({
         template: false,
         showInputs: false,
         minuteStep: 5
     });
-    $(dateP).datepicker();
+    $("#"+dateP).datepicker();
+
+    $("#"+rem).click(function(){
+      $("#"+dt).remove();
+    });
+
+    //increment pickerNum
     pickerNum++;
-  }
+
+  };
+
 
 });
 

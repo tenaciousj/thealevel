@@ -73,13 +73,11 @@
 		      <label for="select" class="col-lg-2 control-label">Meeting Time(s)</label>
 		      <div class="col-lg-10">
 		      	<div id="dateAndTimePickers">
-		      		<input data-provide="datepicker" id="date_1" class="datepicker">
-		      		&nbsp;
-		            <input id="time_1" type="text" class="input-small">
-		            <i class="icon-time"></i>
-		            &nbsp;
-		            <button id="addPickerBtn" ng-click="addPickers()" class="btn btn-link"><i class="fa fa-plus-circle fa-lg"></i></button>
-		            <br>
+		      		<div id="dt1">
+		      			<input data-provide="datepicker" id="date_1" class="datepicker">
+			            <input id="time_1" type="text" class="input-small">
+			            <button id="addPickerBtn" ng-click="addPickers()" class="btn btn-link"><i class="fa fa-plus-circle fa-lg"></i></button>
+		      		</div>
 		        </div>
 		      </div>
 		    </div>
