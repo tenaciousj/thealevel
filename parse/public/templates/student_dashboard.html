@@ -75,7 +75,7 @@
 		      	<div id="dateAndTimePickers">
 		      		<div id="dt1">
 		      			<input data-provide="datepicker" id="date_1" class="datepicker">
-			            <input id="time_1" type="text" class="input-small">
+			            <input id="time_1" type="text" class="input-small timepicker">
 			            <button id="addPickerBtn" ng-click="addPickers()" class="btn btn-link"><i class="fa fa-plus-circle fa-lg"></i></button>
 		      		</div>
 		        </div>
@@ -86,6 +86,7 @@
 		        <button ng-click="askQuestion()" type="submit" class="btn btn-primary">Submit</button>
 		      </div>
 		    </div>
+		    <p id="submitMsg"></p>
 		  </fieldset>
 		</form>
 	</div>

@@ -48,7 +48,8 @@ aLevelApp.controller('StudentDashboardController', function($scope, $location, m
   }
 
   $scope.askQuestion = function(){
-  	var header, question, subjects, meetingPlaces, meetingTimes;
+  	var header, question, subjects, meetingPlaces;
+    var meetingTimes = [];
   	var needsFillingOut = [];
 
   	//validating information
@@ -76,15 +77,29 @@ aLevelApp.controller('StudentDashboardController', function($scope, $location, m
   	else{
   		meetingPlaces = $scope.meetingPlaces.multipleSelect;
   	}
-  	//allFalse checks if all the checkbox values are false (aka nothing is selected)
-  	if(typeof $scope.meetingTimes == "undefined"){
-  		needsFillingOut.push("Meeting Times");
-  	}
-  	else {
 
-  	}
+    
+  	var dates = document.getElementsByClassName("datepicker");
+    for(var i = 0; i < dates.length; i++){
+      var dateID = dates[i]["id"];
+      var inputDate = $("#"+dateID).datepicker("getDate");
+      if(inputDate == null){
+        needsFillingOut.push("Meeting Times");
+        break;
+        //break out of loop, not all valid dates/times anyways
+      }
+      else{
+        var timeID = "time_"+dateID.slice(dateID.indexOf("_")+1, dateID.length);
+        var inputTime = $("#"+timeID).val();
+        debugger;
+        meetingTimes.push(makeNewDate(inputDate, inputTime));
+      }
+    }
+    //if it is empty and we haven't kept track of that
+    if(meetingTimes.length == 0 && needsFillingOut.indexOf("Meeting Times") == -1){
+      needsFillingOut.push("Meeting Times");
+    }
 
-  	
 
   	//if something wasn't filled out correctly
     if(needsFillingOut.length > 0){
@@ -100,10 +115,39 @@ aLevelApp.controller('StudentDashboardController', function($scope, $location, m
       $("#error").css("color", "red");
     }
     //everything was filled correctly
+    //store in database!
     else{
     	$("#error").html("");
+
+      var Message = Parse.Object.extend("Message");
+      var newMessage = new Message();
+
+      newMessage.set("subjects", subjects);
+      newMessage.set("header", header);
+      newMessage.set("content", question);
+      newMessage.set("meetingPlaces", meetingPlaces);
+      newMessage.set("userPointer", Parse.User.current());
+      newMessage.set("meetingTimes", meetingTimes);
+
+      //save new message in database
+      newMessage.save(null, {
+        success: function(result){
+          $("#submitMsg").html("Your message was successfully submitted!");
+
+        },
+        error: function(result, error){
+          $("#submitMsg").html("Your message was not successfully submitted. Please wait and try again later.");
+          console.log("Error in saving new message: " + error);
+        }
+
+      });
+
+
     }
   };
+
+
+
 
   $scope.addPickers = function() {
 
@@ -114,7 +158,7 @@ aLevelApp.controller('StudentDashboardController', function($scope, $location, m
     var newHTML = "<div id='"+dt+"'>"+
                   "<input data-provide='datepicker' id='"+dateP+"' class='datepicker'>"+
                   "&nbsp"+
-                  "<input id='"+timeP+"' type='text' class='input-small'>"+
+                  "<input id='"+timeP+"' type='text' class='input-small timepicker'>"+
                   "&nbsp"+
                   "<button id='"+rem+"' class='btn btn-link'><i class='fa fa-minus-circle fa-lg'></i></button>"+
                   "</div>";
@@ -174,4 +218,19 @@ aLevelApp.factory("meetingPlacesService", function($rootScope, $q){
 
 
 });
+
+function makeNewDate(date, strTime){
+  var year = date.getFullYear();
+  var month = date.getMonth();
+  var day = date.getDate();
+
+  var meridium = strTime.slice(-2).toUpperCase();
+  var hourNoMer = parseInt(strTime.slice(0, strTime.indexOf(":")));
+
+  var hour = meridium == "PM" ? hourNoMer+11 : hourNoMer;
+  var min = parseInt(strTime.slice(strTime.indexOf(":")+1, strTime.indexOf(":")+3));
+
+  var newDate = new Date(year, month, day, hour, min, 0, 0);
+  return newDate.toLocaleString();
+}
 
