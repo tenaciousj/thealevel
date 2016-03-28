@@ -48,10 +48,12 @@ aLevelApp.controller('NewsFeedController', function($scope, $location) {
                 var obj = {};
                 var createdAt = new Date();
                 createdAt = results[i]["createdAt"];
-
                 obj["header"] = results[i].get("header");
                 obj["createdAt"] = createdAt.toDateString() + " " + formatAMPM(createdAt);
                 obj["content"] = results[i].get("content");
+                obj["student"] = results[i].get("userPointer");
+                obj["meetingTimes"] = results[i].get("meetingTimes");
+                obj["meetingPlaces"] = results[i].get("meetingPlaces");
 
                 $scope.messages.push(obj);
               }
@@ -157,7 +159,10 @@ aLevelApp.controller('NewsFeedController', function($scope, $location) {
                 obj["header"] = results[i].get("header");
                 obj["createdAt"] = createdAt.toDateString() + " " + formatAMPM(createdAt);
                 obj["content"] = results[i].get("content");
-
+                obj["student"] = results[i].get("userPointer");
+                obj["meetingTimes"] = results[i].get("meetingTimes");
+                obj["meetingPlaces"] = results[i].get("meetingPlaces");
+                debugger;
                 $scope.messages.push(obj);
               }
             }
@@ -176,15 +181,90 @@ aLevelApp.controller('NewsFeedController', function($scope, $location) {
       }); 
     };
 
-    $scope.acceptQuestion = function() {
-      
+    
+    $scope.lookAtQuestion = function(message) {
+      $scope.question = {};
+
+      //hide newsfeed for now
+      $("#newsFeedContainer").css("display", "none");
+
+      //show confirmation page
+      $("#acceptSessionContainer").css("display", "block");
+
+      var studentQuery = new Parse.Query(Parse.User);
+      studentQuery.equalTo("objectId", message["student"]["id"]);
+      studentQuery.first({
+        success: function(result) {
+          console.log("Successfully retrieved asker");
+          $("#acceptSessionLoad").css("display", "none");
+          $("#acceptSession").css("display", "block");
+          $scope.question["student"] = result.get("firstName") + " " + result.get("lastName");
+          $scope.$apply();
+        },
+        error: function(error) {
+          alert("Error in finding asker: " + error.code + " " + error.message);
+          $("#acceptSessionLoad").css("display", "none");
+          $("#acceptSession").html("Database error. Please try again later.");
+        }
+
+      });
+
+      $scope.question["header"] = message["header"];
+      $scope.question["content"] = message["content"];
+      $scope.question["meetingTimes"] = message["meetingTimes"];
+      $scope.question["meetingPlaces"] = message["meetingPlaces"];
+    };
+
+    $scope.acceptQuestion = function(question) {
+      var needsFillingOut = [];
+
+      //comments are optional
+      var comments = $scope.question["comments"];
+      var meetingPlace, meetingTime;
+
+      if(typeof $scope.question["mp"] == "undefined"){
+        needsFillingOut.push("Meeting Place");
+      }
+      else{
+        meetingPlace = $scope.question["mp"];
+      }
+      if(typeof $scope.question["mt"] == "undefined"){
+        needsFillingOut.push("Meeting Time");
+      }
+      else{
+        meetingTime = $scope.question["mt"];
+      }
+
+      //if they haven't filled everything out
+      if(needsFillingOut.length > 0){
+        var html = "Please fill out the following sections: ";
+        for(var i = 0; i < needsFillingOut.length; i++){
+          html+= needsFillingOut[i];
+          if(i!=needsFillingOut.length-1){
+            html+=", ";
+          }
+        }
+        $("#errorBlock").html(html);
+      }
+      //otherwise, accept the tutoring session!
+      else{
+        $("#errorBlock").html("");
+
+      }
+
     }
+
+    $scope.cancelAccept = function(){
+      $("#acceptSessionLoad").css("display", "block");
+      $("#newsFeedContainer").css("display", "block");
+      $("#acceptSessionContainer").css("display", "none");
+    };
 
     //log tutor out
     $scope.tutorLogOut = function () {
       Parse.User.logOut();
 
-    }
+    };
      
 });
 

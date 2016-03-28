@@ -24,7 +24,6 @@ aLevelApp.config(['$routeProvider',
         templateUrl: 'templates/student/askAQuestion.html',
         controller: 'AskAQuestionController'
       }).
-      
       otherwise({
         redirectTo: '/login'
       });
