@@ -12,6 +12,8 @@ aLevelApp.controller('StudentDashboardController', function($scope, $location, m
     $location.path("login");
     $scope.$apply();
   }
+
+
   //they're logged in and a student!
   else {
 
@@ -91,7 +93,6 @@ aLevelApp.controller('StudentDashboardController', function($scope, $location, m
       else{
         var timeID = "time_"+dateID.slice(dateID.indexOf("_")+1, dateID.length);
         var inputTime = $("#"+timeID).val();
-        debugger;
         meetingTimes.push(makeNewDate(inputDate, inputTime));
       }
     }
@@ -181,6 +182,10 @@ aLevelApp.controller('StudentDashboardController', function($scope, $location, m
     pickerNum++;
 
   };
+  //log student out
+  $scope.studentLogOut = function () {
+    Parse.User.logOut();
+  }
 
 
 });

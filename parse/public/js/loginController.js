@@ -1,4 +1,18 @@
 aLevelApp.controller('LoginController', function($scope, $location) {
+
+  var currentUser = Parse.User.current();
+  //if someone is already logged in
+  if(currentUser){
+    if(currentUser.get("type") == "student"){
+      $location.path("studentdashboard");
+      $scope.$apply();
+    }
+    else if(currentUser.get("type") == "tutor"){
+      $location.path("tutordashboard");
+      $scope.$apply();
+    }
+  }
+  
      
   $scope.dashboardLogIn = function() {
     var errorHTML = "";
