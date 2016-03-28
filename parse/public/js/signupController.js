@@ -137,10 +137,10 @@ aLevelApp.controller('SignUpController', function($scope, $location, subjectsSer
 
           console.log("Signing up of new user successful!");
           if(type == "tutor"){
-            $location.path("tutordashboard");
+            $location.path("newsfeed");
           }
           else if(type == "student"){
-            $location.path("studentdashboard");
+            $location.path("askaquestion");
           }
           $scope.$apply();
 

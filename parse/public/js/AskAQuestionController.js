@@ -1,7 +1,7 @@
 //for date and time pickers
 var pickerNum = 2;
 
-aLevelApp.controller('StudentDashboardController', function($scope, $location, meetingPlacesService) {
+aLevelApp.controller('AskAQuestionController', function($scope, $location, meetingPlacesService) {
 
   var currentUser = Parse.User.current();
 

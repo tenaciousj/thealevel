@@ -16,19 +16,36 @@ aLevelApp.config(['$routeProvider',
         templateUrl: 'templates/signup.html',
         controller: 'SignUpController'
       }).
-      when('/tutordashboard', {
-        templateUrl: 'templates/tutor_dashboard.html',
-        controller: 'TutorDashboardController'
+      when('/newsfeed', {
+        templateUrl: 'templates/tutor/newsFeed.html',
+        controller: 'NewsFeedController'
       }).
-      when('/studentdashboard', {
-        templateUrl: 'templates/student_dashboard.html',
-        controller: 'StudentDashboardController'
+      when('/askaquestion', {
+        templateUrl: 'templates/student/askAQuestion.html',
+        controller: 'AskAQuestionController'
       }).
+      
       otherwise({
         redirectTo: '/login'
       });
 }]);
 
+// when('/upcomingsessions', {
+//         templateUrl: 'templates/tutorUpcomingSessions.html',
+//         controller: 'UpcomingSessionsController'
+//       }).
+//       when('/sessionhistory', {
+//         templateUrl: 'templates/sessionHistory.html',
+//         controller: 'SessionHistoryController'
+//       }).
+//       when('/studentaccountsettings', {
+//         templateUrl: 'templates/student/studentAccountSettings.html',
+//         controller: 'StudentAccountSettingsController'
+//       }).
+//       when('/tutoraccountsettings', {
+//         templateUrl: 'templates/tutor/tutorAccountSettings.html',
+//         controller: 'TutorAccountSettingsController'
+//       }).
 
 
 

@@ -4,11 +4,11 @@ aLevelApp.controller('LoginController', function($scope, $location) {
   //if someone is already logged in
   if(currentUser){
     if(currentUser.get("type") == "student"){
-      $location.path("studentdashboard");
+      $location.path("askaquestion");
       $scope.$apply();
     }
     else if(currentUser.get("type") == "tutor"){
-      $location.path("tutordashboard");
+      $location.path("newsfeed");
       $scope.$apply();
     }
   }
@@ -34,10 +34,10 @@ aLevelApp.controller('LoginController', function($scope, $location) {
       Parse.User.logIn($scope.email, $scope.password, {
         success: function(user){
           if(user.get("type") == "tutor"){
-            $location.path("tutordashboard");
+            $location.path("newsfeed");
           }
           else if (user.get("type") == "student"){
-            $location.path("studentdashboard");
+            $location.path("askaquestion");
           }
           $scope.$apply();
         },

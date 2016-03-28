@@ -1,5 +1,5 @@
 
-aLevelApp.controller('TutorDashboardController', function($scope, $location) {
+aLevelApp.controller('NewsFeedController', function($scope, $location) {
      var currentUser = Parse.User.current();
      
      $scope.messages = [];
@@ -11,6 +11,8 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
         $scope.$apply();
      }
      else{
+
+
       //LOAD MESSAGES//
       var messageClass = Parse.Object.extend("Message");
       var messageQuery = new Parse.Query(messageClass);
@@ -53,8 +55,6 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
 
                 $scope.messages.push(obj);
               }
-              
-              
             }
             $scope.$apply();
 
@@ -146,7 +146,6 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
             $scope.$apply();
           }
           else {
-            debugger;
             $scope.messages = [];
             for(var i = 0; i < results.length; i++){
               var subjectListOfResults = results[i].get("subjects");
@@ -177,6 +176,9 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
       }); 
     };
 
+    $scope.acceptQuestion = function() {
+      
+    }
 
     //log tutor out
     $scope.tutorLogOut = function () {
@@ -185,6 +187,7 @@ aLevelApp.controller('TutorDashboardController', function($scope, $location) {
     }
      
 });
+
 
 //helper function to convert to AM/PM in loadMessagesHTML()
 function formatAMPM(date) {
