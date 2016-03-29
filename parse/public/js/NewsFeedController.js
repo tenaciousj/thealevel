@@ -191,6 +191,8 @@ aLevelApp.controller('NewsFeedController', function($scope, $location) {
       //show confirmation page
       $("#acceptSessionContainer").css("display", "block");
 
+      $scope.question["studentID"] = message["student"]["id"];
+
       var studentQuery = new Parse.Query(Parse.User);
       studentQuery.equalTo("objectId", message["student"]["id"]);
       studentQuery.first({
@@ -248,7 +250,9 @@ aLevelApp.controller('NewsFeedController', function($scope, $location) {
       }
       //otherwise, accept the tutoring session!
       else{
+        //make a new session
         $("#errorBlock").html("");
+
 
       }
 
